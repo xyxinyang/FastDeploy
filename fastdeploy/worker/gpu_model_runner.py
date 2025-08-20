@@ -543,7 +543,7 @@ class GPUModelRunner(ModelRunnerBase):
             idx = i
             self.share_inputs["input_ids"][idx : idx + 1, :input_length] = np.array([5] * input_length)
             self.share_inputs["prompt_ids"][idx : idx + 1, :input_length] = np.array([5] * input_length)
-            self.share_inputs["eos_token_id"][:] = np.array([2], dtype="int64").reshape(-1, 1) # TODO 从Request中获取eos_token_ids
+            self.share_inputs["eos_token_id"][:] = np.array([2], dtype="int64").reshape(-1, 1) # TODO(wangyafeng):从Request中获取eos_token_id
             self.share_inputs["seq_lens_this_time"][idx : idx + 1] = input_length
             self.share_inputs["step_seq_lens_encoder"][idx : idx + 1] = input_length
             self.share_inputs["seq_lens_encoder"][idx : idx + 1] = input_length
