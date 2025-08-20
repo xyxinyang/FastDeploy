@@ -227,7 +227,7 @@ class GPUModelRunner(ModelRunnerBase):
                             dtype=paddle.int64,
                         )
                         vision_inputs["images"] = paddle.to_tensor(
-                            inputs["images"][request.image_start : request.image_end], dtype="uint8"
+                            inputs["images"][request.image_start : request.image_end], dtype="uint8" if "ernie" in self.model_config.model_type else "bfloat16"
                         )
                         vision_inputs["grid_thw"] = paddle.to_tensor(
                             inputs["grid_thw"][request.num_image_start : request.num_image_end], dtype="int64"
@@ -543,7 +543,7 @@ class GPUModelRunner(ModelRunnerBase):
             idx = i
             self.share_inputs["input_ids"][idx : idx + 1, :input_length] = np.array([5] * input_length)
             self.share_inputs["prompt_ids"][idx : idx + 1, :input_length] = np.array([5] * input_length)
-            self.share_inputs["eos_token_id"][:] = np.array([2], dtype="int64").reshape(-1, 1)
+            self.share_inputs["eos_token_id"][:] = np.array([2], dtype="int64").reshape(-1, 1) # TODO 从Request中获取eos_token_ids
             self.share_inputs["seq_lens_this_time"][idx : idx + 1] = input_length
             self.share_inputs["step_seq_lens_encoder"][idx : idx + 1] = input_length
             self.share_inputs["seq_lens_encoder"][idx : idx + 1] = input_length
@@ -733,6 +733,11 @@ class GPUModelRunner(ModelRunnerBase):
 
         if self.enable_mm:
             head_dim = self.model_config.head_dim
+            if "qwen" in self.model_config.model_type: # neox style = True
+                rope_head_dim = head_dim
+            else: # neox style = False
+                rope_head_dim = head_dim // 2
+
             self.share_inputs["rope_emb"] = paddle.full(
                 shape=[
                     max_num_seqs,
@@ -740,7 +745,7 @@ class GPUModelRunner(ModelRunnerBase):
                     1,
                     self.parallel_config.max_model_len,
                     1,
-                    head_dim // 2,
+                    rope_head_dim,
                 ],
                 fill_value=0,
                 dtype="float32",
@@ -1589,7 +1594,7 @@ class GPUModelRunner(ModelRunnerBase):
             image_type_ids = one["image_type_ids"][np.newaxis, :]
             images = one["images"]
             image_type_ids = paddle.to_tensor(image_type_ids, dtype=paddle.int64)
-            images = paddle.to_tensor(images, dtype="uint8")
+            images = paddle.to_tensor(images, dtype="uint8" if "ernie" in self.model_config.model_type else "bfloat16")
             grid_thw = paddle.to_tensor(one["grid_thw"], dtype="int64")
         else:
             image_type_ids = None
