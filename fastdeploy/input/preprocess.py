@@ -71,7 +71,7 @@ class InputPreprocessor:
         if self.reasoning_parser:
             reasoning_parser_obj = ReasoningParserManager.get_reasoning_parser(self.reasoning_parser)
 
-        config = ModelConfig({"model": self.model_name_or_path})
+        config = ModelConfig(self.model_name_or_path)
         architectures = config.architectures[0]
 
         if not self.enable_mm:

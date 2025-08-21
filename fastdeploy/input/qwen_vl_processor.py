@@ -64,7 +64,7 @@ class QwenVLProcessor(TextProcessor):
         processor_kwargs = self._parse_processor_kwargs(mm_processor_kwargs)
         self.processor = DataProcessor(
             model_path=model_name_or_path,
-            tokens_per_second=config.vision_config.tokens_per_second,
+            tokens_per_second=config.vision_config["tokens_per_second"],
             tokenizer=self.tokenizer,
             **processor_kwargs,
         )

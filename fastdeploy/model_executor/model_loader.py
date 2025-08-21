@@ -27,6 +27,9 @@ from fastdeploy.model_executor.models.ernie4_5_mtp import Ernie4_5_MTPPretrained
 from fastdeploy.model_executor.models.ernie4_5_vl.ernie4_5_vl_moe import (
     Ernie4_5_VLPretrainedModel,
 )
+from fastdeploy.model_executor.models.qwen2_5_vl.qwen2_5_vl import (
+    Qwen2_5_VLPretrainedModel,
+)
 from fastdeploy.model_executor.models.model_base import ModelRegistry
 from fastdeploy.model_executor.models.qwen2 import Qwen2PretrainedModel
 from fastdeploy.model_executor.models.qwen3 import Qwen3PretrainedModel
@@ -42,6 +45,7 @@ MODEL_CLASSES = {
     "Ernie4_5_ForCausalLM": Ernie4_5_PretrainedModel,
     "DeepseekV3ForCausalLM": DeepSeekV3PretrainedModel,
     "Ernie4_5_VLMoeForConditionalGeneration": Ernie4_5_VLPretrainedModel,
+    "Qwen2_5_VLForConditionalGeneration": Qwen2_5_VLPretrainedModel
 }
 
 

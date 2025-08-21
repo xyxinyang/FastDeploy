@@ -38,7 +38,7 @@ from fastdeploy.model_executor.layers.normalization import RMSNorm
 from fastdeploy.model_executor.layers.utils import get_tensor
 from fastdeploy.model_executor.models.qwen2 import Qwen2DecoderLayer
 from fastdeploy.model_executor.models.model_base import ModelForCasualLM
-from fastdeploy.multimodal.registry import MultimodalRegistry
+
 from fastdeploy.platforms import current_platform
 
 if current_platform.is_cuda():
@@ -162,7 +162,6 @@ class Qwen2_5_VLModel(nn.Layer):
         return out
 
 
-@MultimodalRegistry.register_model()
 class Qwen2_5_VLForConditionalGeneration(ModelForCasualLM):
     """
     Qwen2_5_VLForConditionalGeneration
@@ -260,7 +259,7 @@ class Qwen2_5_VLForConditionalGeneration(ModelForCasualLM):
 
 class Qwen2_5_VLPretrainedModel(PretrainedModel):
     """
-    Qwen2_PretrainedModel
+    Qwen2_5_VLPretrainedModel
     """
 
     config_class = FDConfig
