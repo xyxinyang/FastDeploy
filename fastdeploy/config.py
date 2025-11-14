@@ -1070,7 +1070,7 @@ class LoadChoices(str, Enum):
 
     DEFAULT = "default"
     DEFAULT_V1 = "default_v1"
-
+    DUMMY = "dummy"
 
 class LoadConfig:
     """

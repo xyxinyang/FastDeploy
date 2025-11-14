@@ -191,6 +191,15 @@ class EngineArgs:
     Disable any whitespace in guided decoding.
     """
 
+    # Weight loading strategy
+    load_choices: str = "default"
+    """
+    Model weight loading mode. Options:
+    - `default`: Load real weights from checkpoints (normal behavior)
+    - `default_v1`: Use the v1 loader pipeline
+    - `dummy`: Skip checkpoint IO and initialize fake weights for fast debug/restart
+    """
+
     # Inference configuration parameters
     gpu_memory_utilization: float = 0.9
     """
@@ -836,8 +845,10 @@ class EngineArgs:
             "--load-choices",
             type=str,
             default=EngineArgs.load_choices,
-            help="The format of the model weights to load.\
-                 default/default_v1.",
+            help=(
+                "Model weight loading mode. One of: default, default_v1, dummy. "
+                "Use 'dummy' to skip checkpoint IO and initialize fake weights for fast debug/restart."
+            ),
         )
 
         # CacheConfig parameters group
